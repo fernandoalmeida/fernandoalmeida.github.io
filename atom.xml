@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Desenvolvimento de Software]]></title>
+  <link href="http://fernandoalmeida.github.io/atom.xml" rel="self"/>
+  <link href="http://fernandoalmeida.github.io/"/>
+  <updated>2014-07-23T21:31:12-03:00</updated>
+  <id>http://fernandoalmeida.github.io/</id>
+  <author>
+    <name><![CDATA[Fernando Almeida]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Customizando Os Logs Do Rails Para Análise]]></title>
+    <link href="http://fernandoalmeida.github.io/blog/customizando-os-logs-do-rails-para-analise/"/>
+    <updated>2014-06-22T02:04:51-03:00</updated>
+    <id>http://fernandoalmeida.github.io/blog/customizando-os-logs-do-rails-para-analise</id>
+    <content type="html"><![CDATA[<p>Formatar os logs da aplicação para simplificar o parsing será nosso principal objetivo nesse post, esta é a primeira etapa de um outro objetivo que é centralizar e analisar programaticamente esses logs para identificar eventos e aplicar ações como indexar, arquivar, notificar (por email/group chat) ou simplesmente delegar para outras ferramentas como bug tracker, dashboard de estatísticas (técnicas e/ou de negócio), etc.</p>
+
+<!--more-->
+
+
+<p>O log padrão do Rails é feito em múltiplas linhas, o que facilita a leitura direta durante o desenvolvimento mas dificulta o parsing.</p>
+
+<p>A <a href="http://docs.fluentd.org/articles/in_tail">documentação do Fluentd</a> exemplifica o parsing multiline de um GET padrão do Rails mas basta acontecer qualquer coisa diferente do “normal” (como um warning ou exception com backtrace) que a regex é rapidamente invalidada.
+Para superar essa dificuldade vamos logar cada request em uma única linha e além disso adicionar informações para contextualizar o conteúdo de acordo com a nossa necessidade.</p>
+
+<p>Existem diversas <a href="https://www.ruby-toolbox.com/categories/Logging">ferramentas para customizar os logs do Rails</a>, depois de testar algumas escolhi a gem <a href="https://github.com/roidrage/lograge">Lograge</a> para nos ajudar neste ponto.</p>
+
+<p>A primeira coisa a fazer é instalar e configurar a gem:</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="err">“</span><span class="n">lograge</span><span class="err">”</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>config/application.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">log_level</span> <span class="ss">:info</span>
+</span><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">lograge</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kp">true</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Com isso já temos um log bem mais fácil de parsear:</p>
+
+<pre><code>method=GET path=/ format=html controller=site action=index status=200 duration=262.28 view=108.93 db=3.84
+</code></pre>
+
+<p>Vamos ainda extrair mais algumas informações dos nossos objetos “request“ e “session” criando o módulo CustomLog::ControllerHelper:</p>
+
+<figure class='code'><figcaption><span>lib/custom_log/controller_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ControllerHelper</span>
+</span><span class='line'>    <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+</span><span class='line'>    <span class="n">included</span> <span class="k">do</span>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">append_info_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">super</span>
+</span><span class='line'>        <span class="n">payload</span><span class="o">[</span><span class="ss">:request</span><span class="o">]</span> <span class="o">=</span> <span class="n">request</span>
+</span><span class='line'>        <span class="n">payload</span><span class="o">[</span><span class="ss">:session</span><span class="o">]</span> <span class="o">=</span> <span class="n">session</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Incluiremos esse módulo em nosso ApplicationController:</p>
+
+<figure class='code'><figcaption><span>app/controllers/application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">ApplicationController</span> <span class="o">&lt;</span> <span class="no">ActionController</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">CustomLog</span><span class="o">::</span><span class="no">ControllerHelper</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Agora temos a possibilidade de extrair as informações que desejamos, faremos isso criando a classe CustomLog::Subscriber:</p>
+
+<figure class='code'><figcaption><span>lib/custom_log/subscriber.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Subscriber</span>
+</span><span class='line'>    <span class="kp">attr_reader</span> <span class="ss">:event</span><span class="p">,</span> <span class="ss">:payload</span>
+</span><span class='line'>    <span class="kp">attr_accessor</span> <span class="ss">:data</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+</span><span class='line'>      <span class="vi">@event</span> <span class="o">=</span> <span class="n">event</span>
+</span><span class='line'>      <span class="vi">@payload</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span>
+</span><span class='line'>      <span class="vi">@data</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">:time</span> <span class="o">=&gt;</span> <span class="sx">%Q(‘</span><span class="si">#{</span><span class="n">event</span><span class="o">.</span><span class="n">time</span><span class="si">}</span><span class="sx">’)</span> <span class="p">}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">extract_data</span>
+</span><span class='line'>      <span class="n">session_data</span>
+</span><span class='line'>      <span class="n">request_data</span>
+</span><span class='line'>      <span class="n">params_data</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="n">data</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">session_data</span>
+</span><span class='line'>      <span class="n">session</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:session</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">session</span>
+</span><span class='line'>        <span class="n">data</span><span class="o">.</span><span class="n">merge!</span><span class="p">({</span> <span class="ss">:session_id</span> <span class="o">=&gt;</span> <span class="n">session</span><span class="o">[</span><span class="ss">:session_id</span><span class="o">]</span> <span class="p">})</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">request_data</span>
+</span><span class='line'>      <span class="n">request</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:request</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">request</span>
+</span><span class='line'>        <span class="n">data</span><span class="o">.</span><span class="n">merge!</span><span class="p">({</span>
+</span><span class='line'>          <span class="ss">:host</span> <span class="o">=&gt;</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:request_id</span> <span class="o">=&gt;</span> <span class="n">request</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:remote_ip</span> <span class="o">=&gt;</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_ip</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:user_agent</span> <span class="o">=&gt;</span> <span class="sx">%Q(‘</span><span class="si">#{</span><span class="n">request</span><span class="o">.</span><span class="n">user_agent</span><span class="si">}</span><span class="sx">’)</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:referer</span> <span class="o">=&gt;</span> <span class="n">request</span><span class="o">.</span><span class="n">referer</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:flash</span> <span class="o">=&gt;</span> <span class="n">request</span><span class="o">.</span><span class="n">flash</span><span class="o">.</span><span class="n">instance_variable_get</span><span class="p">(</span><span class="err">‘</span><span class="vi">@flashes</span><span class="err">’</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">params_data</span>
+</span><span class='line'>      <span class="n">internal_params</span> <span class="o">=</span> <span class="sx">%w(controller action format</span>
+</span><span class='line'><span class="sx">                           utf8 authenticity_token commit)</span>
+</span><span class='line'>      <span class="n">params</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:params</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">params</span>
+</span><span class='line'>        <span class="n">data</span><span class="o">.</span><span class="n">merge!</span><span class="p">({</span> <span class="ss">:params</span> <span class="o">=&gt;</span> <span class="n">params</span><span class="o">.</span><span class="n">except</span><span class="p">(</span><span class="o">*</span><span class="n">internal_params</span><span class="p">)</span> <span class="p">})</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Configuramos também a gem “lograge” para usar nossa classe:</p>
+
+<figure class='code'><figcaption><span>config/environments/development.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">config</span><span class="o">.</span><span class="n">lograge</span><span class="o">.</span><span class="n">custom_options</span> <span class="o">=</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">event</span><span class="o">|</span>
+</span><span class='line'>  <span class="no">CustomLog</span><span class="o">::</span><span class="no">Subscriber</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">event</span><span class="p">)</span><span class="o">.</span><span class="n">extract_data</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Agora complementamos nosso log com:</p>
+
+<pre><code>time=’2014-06-15 13:13:47 -0300' session_id=abcde12345 host=app01 request_id=a1b2c3d4e5 remote_ip=179.209.205.143 user_agent=’Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:26.0) Gecko/20100101 Firefox/26.0' referer=/things/new flash={:notice=&gt;”Dados gravados com sucesso”} params={“thing”=&gt;{“name”=&gt;”Teste”}
+</code></pre>
+
+<p>Além disso vamos incluir também as mensagens de validação do objeto que estamos manipulando, para isso vamos alterar o helper e o subscriber:</p>
+
+<figure class='code'><figcaption><span>lib/custom_log/controller_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ControllerHelper</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">validation_messages</span>
+</span><span class='line'>      <span class="n">saved_object</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">to_json</span> <span class="k">unless</span> <span class="n">saved_object</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">blank?</span>
+</span><span class='line'>    <span class="k">rescue</span>
+</span><span class='line'>      <span class="kp">nil</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">saved_object</span>
+</span><span class='line'>      <span class="nb">instance_variable_get</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">#{</span><span class="n">controller_name</span><span class="o">.</span><span class="n">singularize</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">append_info_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">payload</span><span class="o">[</span><span class="ss">:validations</span><span class="o">]</span> <span class="o">=</span> <span class="n">validation_messages</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>lib/custom_log/subscriber.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Subscriber</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">extract_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">validations_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">validations_data</span>
+</span><span class='line'>      <span class="n">validations</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:validations</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">validations</span>
+</span><span class='line'>        <span class="n">data</span><span class="o">.</span><span class="n">merge!</span><span class="p">({</span> <span class="ss">:validations</span> <span class="o">=&gt;</span> <span class="n">validations</span> <span class="p">})</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>complementando o log com coisas do tipo:</p>
+
+<pre><code>flash={:error=&gt;”Não foi possível gravar os dados”} validations={"name":["já está em uso"]}
+</code></pre>
+
+<p>Em uma aplicação multitenant também é importante ter informações sobre o usuário e o tenant (empresa, conta, etc) com que os requests estão interagindo, para isso alteramos mais uma vez o helper e o subscriber:</p>
+
+<figure class='code'><figcaption><span>lib/custom_log/controller_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">ControllerHelper</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">custom_log_data</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>      <span class="n">payload</span><span class="o">[</span><span class="ss">:custom_log_data</span><span class="o">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">append_info_to_payload</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">custom_log_data</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<figure class='code'><figcaption><span>lib/custom_log/subscriber.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Subscriber</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">extract_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">custom_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">custom_data</span>
+</span><span class='line'>      <span class="n">custom</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:custom_log_data</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">custom</span><span class="o">.</span><span class="n">is_a?</span><span class="p">(</span><span class="no">Hash</span><span class="p">)</span>
+</span><span class='line'>        <span class="n">custom</span><span class="o">.</span><span class="n">each_pair</span> <span class="p">{</span> <span class="o">|</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="o">|</span> <span class="n">data</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="n">value</span> <span class="p">}</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Como essas informações são específicas de cada aplicação precisamos customizar o método em nosso controller:</p>
+
+<figure class='code'><figcaption><span>app/controllers/application_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">custom_log_data</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">payload</span><span class="o">[</span><span class="ss">:custom_log_data</span><span class="o">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">user_id</span><span class="p">:</span> <span class="n">current_user</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">),</span>
+</span><span class='line'>    <span class="n">account_id</span><span class="p">:</span> <span class="n">current_account</span><span class="o">.</span><span class="n">try</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Dessa forma complementamos nosso log com:</p>
+
+<pre><code>user_id=987 account_id=123
+</code></pre>
+
+<p>E para finalizar vamos logar o backtrace completo em caso de exceptions, para isso vamos complementar o <a href="https://github.com/rails/rails/blob/3-2-stable/activesupport/lib/active_support/notifications/instrumenter.rb">Instrumenter do ActiveSupport</a>:</p>
+
+<figure class='code'><figcaption><span>config/initializers/log_backtrace.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">ActiveSupport</span>
+</span><span class='line'>  <span class="k">module</span> <span class="nn">Notifications</span>
+</span><span class='line'>    <span class="k">class</span> <span class="nc">Instrumenter</span>
+</span><span class='line'>      <span class="kp">attr_reader</span> <span class="ss">:id</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">notifier</span><span class="p">)</span>
+</span><span class='line'>        <span class="vi">@id</span> <span class="o">=</span> <span class="n">unique_id</span>
+</span><span class='line'>        <span class="vi">@notifier</span> <span class="o">=</span> <span class="n">notifier</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">def</span> <span class="nf">instrument</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">payload</span><span class="o">=</span><span class="p">{})</span>
+</span><span class='line'>        <span class="n">started</span> <span class="o">=</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span>
+</span><span class='line'>        <span class="k">begin</span>
+</span><span class='line'>          <span class="k">yield</span>
+</span><span class='line'>        <span class="k">rescue</span> <span class="no">Exception</span> <span class="o">=&gt;</span> <span class="n">e</span>
+</span><span class='line'>          <span class="n">payload</span><span class="o">[</span><span class="ss">:exception</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="n">e</span><span class="o">.</span><span class="n">class</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="o">]</span>
+</span><span class='line'>          <span class="n">payload</span><span class="o">[</span><span class="ss">:backtrace</span><span class="o">]</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">backtrace</span>
+</span><span class='line'>          <span class="k">raise</span> <span class="n">e</span>
+</span><span class='line'>        <span class="k">ensure</span>
+</span><span class='line'>          <span class="vi">@notifier</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">started</span><span class="p">,</span> <span class="no">Time</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="vi">@id</span><span class="p">,</span> <span class="n">payload</span><span class="p">)</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>e alterar novamente nosso subscriber:</p>
+
+<figure class='code'><figcaption><span>lib/custom_log/subscriber.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">module</span> <span class="nn">CustomLog</span>
+</span><span class='line'>  <span class="k">class</span> <span class="nc">Subscriber</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">extract_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">exception_data</span>
+</span><span class='line'>      <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'>    <span class="k">def</span> <span class="nf">exception_data</span>
+</span><span class='line'>      <span class="n">exception</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:exception</span><span class="o">]</span>
+</span><span class='line'>      <span class="n">backtrace</span> <span class="o">=</span> <span class="n">payload</span><span class="o">[</span><span class="ss">:backtrace</span><span class="o">]</span>
+</span><span class='line'>      <span class="k">if</span> <span class="n">exception</span>
+</span><span class='line'>        <span class="n">data</span><span class="o">.</span><span class="n">merge!</span><span class="p">({</span>
+</span><span class='line'>          <span class="ss">:exception_class</span> <span class="o">=&gt;</span> <span class="n">exception</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:exception_message</span> <span class="o">=&gt;</span> <span class="n">exception</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
+</span><span class='line'>          <span class="ss">:backtrace</span> <span class="o">=&gt;</span> <span class="sx">%Q(‘</span><span class="si">#{</span><span class="nb">Array</span><span class="p">(</span><span class="n">backtrace</span><span class="p">)</span><span class="o">.</span><span class="n">to_json</span><span class="si">}</span><span class="sx">’)</span>
+</span><span class='line'>        <span class="p">})</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Isso adiciona ao  nosso log informações como:</p>
+
+<pre><code>exception_class=RuntimeError exception_message=Test backtrace=’[“complete", "backtrace", "array"]'
+</code></pre>
+
+<p>Com isso atingimos nosso objetivo que é ter o log em uma única linha contextualizado com todas as informações que nos interessam para fazer análise de forma automatizada.</p>
+
+<p>Por precaução fiz um benchmark bem  simples com o antes/depois de nossas customizações e a diferença foi de 0.01 segundo simulando 1000 requests com concorrência de 30, o que acredito ser aceitável para a maioria dos casos.</p>
+
+<p>Veja um <a href="https://gist.github.com/fernandoalmeida/ef03643fd8d924cc034a">Gist com o conteúdo completo</a> de cada arquivo que criamos aqui.</p>
+
+<p>Na próxima etapa vamos usar um agregador para receber esses logs customizados, parsear  e tomar decisões sobre onde persistir, arquivar, indexar, notificar, disponibilizar para outros serviços (via <a href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">PubSub</a>, webhook, etc) totalmente independente/desacoplado da aplicação e tolerante a falhas.</p>
+
+<p><strong>Referências e links relacionados:</strong></p>
+
+<ul>
+<li><a href="http://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">http://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying</a></li>
+<li><a href="http://gojko.net/2006/12/09/logging-anti-patterns/">http://gojko.net/2006/12/09/logging-anti-patterns/</a></li>
+<li><a href="http://blog.mmlac.com/log4r-for-rails/">http://blog.mmlac.com/log4r-for-rails/</a></li>
+<li><a href="http://rubyjunky.com/cleaning-up-rails-4-production-logging.html">http://rubyjunky.com/cleaning-up-rails-4-production-logging.html</a></li>
+<li><a href="http://www.paperplanes.de/2012/3/14/on-notifications-logsubscribers-and-bringing-sanity-to-rails-logging.html">http://www.paperplanes.de/2012/3/14/on-notifications-logsubscribers-and-bringing-sanity-to-rails-logging.html</a></li>
+<li><a href="http://www.railsonmaui.com//blog/2013/05/08/strategies-for-rails-logging-and-error-handling/">http://www.railsonmaui.com//blog/2013/05/08/strategies-for-rails-logging-and-error-handling/</a></li>
+<li><a href="http://edgeguides.rubyonrails.org/active_support_instrumentation.html">http://edgeguides.rubyonrails.org/active_support_instrumentation.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Livros Que Eu Já Li]]></title>
+    <link href="http://fernandoalmeida.github.io/blog/geral/livros-que-eu-ja-li"/>
+    <updated>2012-07-05T00:24:06-03:00</updated>
+    <id>http://fernandoalmeida.github.io/blog/geral/livros-que-eu-ja-li</id>
+    <content type="html"><![CDATA[<p>Alguns livros que eu já li e podem servir como indicação para mais alguém.</p>
+<div class="livros-lidos">
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/0596516177/?ie=UTF8&tag=fernandoanet-20&linkCode=ur2&camp=1789&creative=9325">
+      <img class="img-responsive img-thumbnail" alt="A_LINGUAGEM_DE_PROGRAMACAO_RUBY_1266541736P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/A_LINGUAGEM_DE_PROGRAMACAO_RUBY_1266541736P.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/1934356476/ref=as_li_ss_tl?ie=UTF8&tag=fernandoanet-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356476">
+      <img class="img-responsive img-thumbnail" alt="metaprogramming_ruby" src="http://fernandoalmeida.github.io/assets/img/blog/livros/metaprogramming_ruby.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/0321490452/ref=as_li_ss_tl?ie=UTF8&tag=fernandoanet-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321490452">
+      <img class="img-responsive img-thumbnail" alt="DESIGN_PATTERNS_IN_RUBY_1310959651P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/DESIGN_PATTERNS_IN_RUBY_1310959651P.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="DESENVOLVIMENTO_WEB_AGIL_COM_RAILS_1230779395P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/DESENVOLVIMENTO_WEB_AGIL_COM_RAILS_1230779395P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="CRAFTING_RAILS_APPLICATIONS_1313032268P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/CRAFTING_RAILS_APPLICATIONS_1313032268P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="fr_secure" src="http://fernandoalmeida.github.io/assets/img/blog/livros/fr_secure.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="THE_RSPEC_BOOK_BEHAVIOURDRIVEN_DEVELOP_1302311685P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/THE_RSPEC_BOOK_BEHAVIOURDRIVEN_DEVELOP_1302311685P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="couchdb_book_cover" src="http://fernandoalmeida.github.io/assets/img/blog/livros/couchdb_book_cover.png" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="mongodb-the-definitive-guide" src="http://fernandoalmeida.github.io/assets/img/blog/livros/mongodb-the-definitive-guide.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="MOBILE_DESIGN_AND_DEVELOPMENT_1310960284P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/MOBILE_DESIGN_AND_DEVELOPMENT_1310960284P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="MOBILE_WEB_DEVELOPMENT_1310960016P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/MOBILE_WEB_DEVELOPMENT_1310960016P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PRO_SMARTPHONE_CROSSPLATFORM_DEVELOPMEN_1310960641P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PRO_SMARTPHONE_CROSSPLATFORM_DEVELOPMEN_1310960641P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PROFESSIONAL_JAVASCRIPT_FOR_WEB_DEVELOPE_1272836465P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PROFESSIONAL_JAVASCRIPT_FOR_WEB_DEVELOPE_1272836465P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="capa-jquery" src="http://fernandoalmeida.github.io/assets/img/blog/livros/capa-jquery.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="AJAX_COM_JQUERY__1249482118P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/AJAX_COM_JQUERY__1249482118P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="capa" src="http://fernandoalmeida.github.io/assets/img/blog/livros/capa.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="SQL__CURSO_PRATICO____1250612826P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/SQL__CURSO_PRATICO____1250612826P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro_postgresql" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro_postgresql.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="GETTING_REAL_1231774505P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/GETTING_REAL_1231774505P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PRACTICES_OF_AN_AGILE_DEVELOPER_1309725961P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PRACTICES_OF_AN_AGILE_DEVELOPER_1309725961P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="SCRUM_E_XP_DIRETO_DAS_TRINCHEIRAS_1231945142P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/SCRUM_E_XP_DIRETO_DAS_TRINCHEIRAS_1231945142P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="THE_PRINCIPLES_OF_PROJECT_MANAGEMENT_1246198793P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/THE_PRINCIPLES_OF_PROJECT_MANAGEMENT_1246198793P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="8575220470" src="http://fernandoalmeida.github.io/assets/img/blog/livros/8575220470.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-cloud-computing-transformando-o-mundo-da-tecnologia-da-informacao-27783" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-cloud-computing-transformando-o-mundo-da-tecnologia-da-informacao-27783.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="CRIANDO_PAGINAS_WEB_COM_CSS_1236281853P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/CRIANDO_PAGINAS_WEB_COM_CSS_1236281853P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="EVERYTHING_YOU_KNOW_ABOUT_CSS_IS_WRONGA_1246198317P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/EVERYTHING_YOU_KNOW_ABOUT_CSS_IS_WRONGA_1246198317P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="HOMEPAGE_USABILIDADE_50_WEBSITES_DESCON_1257947118P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/HOMEPAGE_USABILIDADE_50_WEBSITES_DESCON_1257947118P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="Capa_livro_google_marketing-212x300" src="http://fernandoalmeida.github.io/assets/img/blog/livros/Capa_livro_google_marketing-212x300.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PHP_5_CONCEITOS_PROGRAMACAO_E_INTEGRAC_1231446163P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PHP_5_CONCEITOS_PROGRAMACAO_E_INTEGRAC_1231446163P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PHP_PARA_QUEM_CONHECE_PHP_1248213296P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PHP_PARA_QUEM_CONHECE_PHP_1248213296P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-host-your-website-in-the-cloud" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-host-your-website-in-the-cloud.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-create-your-own-firefox-extensions" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-create-your-own-firefox-extensions.jpeg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-guia-foca-linux" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-guia-foca-linux.png" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="Entendendo_e_Dominando_o_Linux-5ed-CAPA" src="http://fernandoalmeida.github.io/assets/img/blog/livros/Entendendo_e_Dominando_o_Linux-5ed-CAPA.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-redes-de-computadores" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-redes-de-computadores.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-hardware-manual-completo" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-hardware-manual-completo.jpg" height="150" width="120" />
+  </div>
+</div>
+]]></content>
+  </entry>
+  
+</feed>

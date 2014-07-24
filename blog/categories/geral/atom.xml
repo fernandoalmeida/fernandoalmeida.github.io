@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Geral | Desenvolvimento de Software]]></title>
+  <link href="http://fernandoalmeida.github.io/blog/categories/geral/atom.xml" rel="self"/>
+  <link href="http://fernandoalmeida.github.io/"/>
+  <updated>2014-07-23T21:31:12-03:00</updated>
+  <id>http://fernandoalmeida.github.io/</id>
+  <author>
+    <name><![CDATA[Fernando Almeida]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Livros Que Eu Já Li]]></title>
+    <link href="http://fernandoalmeida.github.io/blog/geral/livros-que-eu-ja-li"/>
+    <updated>2012-07-05T00:24:06-03:00</updated>
+    <id>http://fernandoalmeida.github.io/blog/geral/livros-que-eu-ja-li</id>
+    <content type="html"><![CDATA[<p>Alguns livros que eu já li e podem servir como indicação para mais alguém.</p>
+
+
+<div class="livros-lidos">
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/0596516177/?ie=UTF8&tag=fernandoanet-20&linkCode=ur2&camp=1789&creative=9325">
+      <img class="img-responsive img-thumbnail" alt="A_LINGUAGEM_DE_PROGRAMACAO_RUBY_1266541736P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/A_LINGUAGEM_DE_PROGRAMACAO_RUBY_1266541736P.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/1934356476/ref=as_li_ss_tl?ie=UTF8&tag=fernandoanet-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=1934356476">
+      <img class="img-responsive img-thumbnail" alt="metaprogramming_ruby" src="http://fernandoalmeida.github.io/assets/img/blog/livros/metaprogramming_ruby.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <a target="_blank" href="http://www.amazon.com/gp/product/0321490452/ref=as_li_ss_tl?ie=UTF8&tag=fernandoanet-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0321490452">
+      <img class="img-responsive img-thumbnail" alt="DESIGN_PATTERNS_IN_RUBY_1310959651P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/DESIGN_PATTERNS_IN_RUBY_1310959651P.jpg" height="150" width="120" />
+    </a>
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="DESENVOLVIMENTO_WEB_AGIL_COM_RAILS_1230779395P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/DESENVOLVIMENTO_WEB_AGIL_COM_RAILS_1230779395P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="CRAFTING_RAILS_APPLICATIONS_1313032268P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/CRAFTING_RAILS_APPLICATIONS_1313032268P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="fr_secure" src="http://fernandoalmeida.github.io/assets/img/blog/livros/fr_secure.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="THE_RSPEC_BOOK_BEHAVIOURDRIVEN_DEVELOP_1302311685P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/THE_RSPEC_BOOK_BEHAVIOURDRIVEN_DEVELOP_1302311685P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="couchdb_book_cover" src="http://fernandoalmeida.github.io/assets/img/blog/livros/couchdb_book_cover.png" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="mongodb-the-definitive-guide" src="http://fernandoalmeida.github.io/assets/img/blog/livros/mongodb-the-definitive-guide.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="MOBILE_DESIGN_AND_DEVELOPMENT_1310960284P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/MOBILE_DESIGN_AND_DEVELOPMENT_1310960284P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="MOBILE_WEB_DEVELOPMENT_1310960016P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/MOBILE_WEB_DEVELOPMENT_1310960016P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PRO_SMARTPHONE_CROSSPLATFORM_DEVELOPMEN_1310960641P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PRO_SMARTPHONE_CROSSPLATFORM_DEVELOPMEN_1310960641P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PROFESSIONAL_JAVASCRIPT_FOR_WEB_DEVELOPE_1272836465P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PROFESSIONAL_JAVASCRIPT_FOR_WEB_DEVELOPE_1272836465P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="capa-jquery" src="http://fernandoalmeida.github.io/assets/img/blog/livros/capa-jquery.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="AJAX_COM_JQUERY__1249482118P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/AJAX_COM_JQUERY__1249482118P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="capa" src="http://fernandoalmeida.github.io/assets/img/blog/livros/capa.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="SQL__CURSO_PRATICO____1250612826P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/SQL__CURSO_PRATICO____1250612826P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro_postgresql" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro_postgresql.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="GETTING_REAL_1231774505P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/GETTING_REAL_1231774505P.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PRACTICES_OF_AN_AGILE_DEVELOPER_1309725961P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PRACTICES_OF_AN_AGILE_DEVELOPER_1309725961P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="SCRUM_E_XP_DIRETO_DAS_TRINCHEIRAS_1231945142P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/SCRUM_E_XP_DIRETO_DAS_TRINCHEIRAS_1231945142P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="THE_PRINCIPLES_OF_PROJECT_MANAGEMENT_1246198793P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/THE_PRINCIPLES_OF_PROJECT_MANAGEMENT_1246198793P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="8575220470" src="http://fernandoalmeida.github.io/assets/img/blog/livros/8575220470.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-cloud-computing-transformando-o-mundo-da-tecnologia-da-informacao-27783" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-cloud-computing-transformando-o-mundo-da-tecnologia-da-informacao-27783.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="CRIANDO_PAGINAS_WEB_COM_CSS_1236281853P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/CRIANDO_PAGINAS_WEB_COM_CSS_1236281853P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="EVERYTHING_YOU_KNOW_ABOUT_CSS_IS_WRONGA_1246198317P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/EVERYTHING_YOU_KNOW_ABOUT_CSS_IS_WRONGA_1246198317P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="HOMEPAGE_USABILIDADE_50_WEBSITES_DESCON_1257947118P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/HOMEPAGE_USABILIDADE_50_WEBSITES_DESCON_1257947118P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="Capa_livro_google_marketing-212x300" src="http://fernandoalmeida.github.io/assets/img/blog/livros/Capa_livro_google_marketing-212x300.jpg" height="150" width="120" /><br />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PHP_5_CONCEITOS_PROGRAMACAO_E_INTEGRAC_1231446163P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PHP_5_CONCEITOS_PROGRAMACAO_E_INTEGRAC_1231446163P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="PHP_PARA_QUEM_CONHECE_PHP_1248213296P" src="http://fernandoalmeida.github.io/assets/img/blog/livros/PHP_PARA_QUEM_CONHECE_PHP_1248213296P.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-host-your-website-in-the-cloud" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-host-your-website-in-the-cloud.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-create-your-own-firefox-extensions" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-create-your-own-firefox-extensions.jpeg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-guia-foca-linux" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-guia-foca-linux.png" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="Entendendo_e_Dominando_o_Linux-5ed-CAPA" src="http://fernandoalmeida.github.io/assets/img/blog/livros/Entendendo_e_Dominando_o_Linux-5ed-CAPA.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-redes-de-computadores" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-redes-de-computadores.jpg" height="150" width="120" />
+  </div>
+  <div class="col-md-3 col-sm-4 col-xs-6">
+    <img class="img-responsive img-thumbnail" alt="livro-hardware-manual-completo" src="http://fernandoalmeida.github.io/assets/img/blog/livros/livro-hardware-manual-completo.jpg" height="150" width="120" />
+  </div>
+</div>
+
+]]></content>
+  </entry>
+  
+</feed>

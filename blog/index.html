@@ -14,10 +14,10 @@
   <meta name="language" content="pt" />
   <meta name="author" content="Fernando Almeida">
   
-  <title> - Desenvolvimento de Software</title>
+  <title>Blog - Ruby, Rails, Javascript, Linux, DevOps, Cloud Computing - Desenvolvimento de Software</title>
   
-  <meta name="description" content="Recente no Blog Customizando Os Logs Do Rails Para Análise Formatar os logs da aplicação para simplificar o parsing será nosso principal objetivo &hellip;">
-  
+  <meta name="description" content="Textos sobre desenvolvimento de software (principalmente em Ruby) e tópicos relacionados.">
+  <meta name="keywords" content="blog ruby rails javascript backbone devops puppet vagrant cloud computing fernando almeida">
   <link rel="shortcut icon" href="/assets/ico/favicon.png">
   
   <!-- Bootstrap core CSS -->
@@ -32,7 +32,7 @@
   <link href="/assets/css/main.css" rel="stylesheet">
 
   
-  <link rel="canonical" href="http://fernandoalmeida.github.io">
+  <link rel="canonical" href="http://fernandoalmeida.github.io/blog">
 
   <link href="/atom.xml" rel="alternate" title="Desenvolvimento de Software" type="application/atom+xml">
 
@@ -67,9 +67,9 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="/">INÍCIO</a></li>
+        <li class=""><a href="/">INÍCIO</a></li>
         <li class=""><a href="/portfolio/">PORTFOLIO</a></li>
-        <li class=""><a href="/blog/">BLOG</a></li>
+        <li class="active"><a href="/blog/">BLOG</a></li>
         <li class=""><a href="/sobre-mim/">SOBRE MIM</a></li>
         <li class=""><a title="CONTATO" data-toggle="modal" data-target="#myModal" href="#myModal"><i class="fa fa-envelope-o"></i></a></li>
       </ul>
@@ -77,37 +77,116 @@
   </div>
 </div></nav>
   
-    <header role="banner"><div id="headerwrap">
-  <div class="container">
-    <div class="row centered">
-      <div class="col-lg-10 col-lg-offset-1">
-	<h1>Desenvolvimento de Software</h1>
-      </div>
-    </div><!-- row -->
-  </div><!-- container -->
-</div><!-- headerwrap -->
-
-</header>
-  
   <div id="main" class="container w">
     <div id="content">
-      <div class="container w">
-  <div class="row text-center">
-    <div class="col-lg-12">
-      <img src="/assets/img/aprender-praticar-compartilhar.png">
-      <h3>Recente no Blog</h3>
+      <div class="row">
+  <div class="col-lg-8">
+    <article role="article">
+      
+      <div class="row">
+  <div class="col-lg-12">
+    
       
       
-      <h1 class="entry-title"><a href="/blog/customizando-os-logs-do-rails-para-analise/">Customizando Os Logs Do Rails Para Análise</a></h1>
-      <div class="entry-content"><p>Formatar os logs da aplicação para simplificar o parsing será nosso principal objetivo nesse post, esta é a primeira etapa de um outro objetivo que é centralizar e analisar programaticamente esses logs para identificar eventos e aplicar ações como indexar, arquivar, notificar (por email/group chat) ou simplesmente delegar para outras ferramentas como bug tracker, dashboard de estatísticas (técnicas e/ou de negócio), etc.</p>
+        
+        <h2>2014</h2>
+      
+      <article>
+        
+<h1><a href="/blog/customizando-os-logs-do-rails-para-analise/">Customizando Os Logs Do Rails Para Análise</a></h1>
 
+      </article>
+    
+      
+      
+        
+        <h2>2012</h2>
+      
+      <article>
+        
+<h1><a href="/blog/geral/livros-que-eu-ja-li">Livros Que Eu Já Li</a></h1>
+
+      </article>
+    
+  </div>
 </div>
-    </div><!-- col-lg-7 -->
-  </div><!-- row -->
-  <br>
-  <br>
-  <br>
-</div><!-- container -->
+
+      
+      <footer>
+	
+	
+	<div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://fernandoalmeida.github.io/blog/index.html" data-via="fernandoalmeida" data-counturl="http://fernandoalmeida.github.io/blog/index.html" >Tweet</a>
+  
+  
+  
+</div>
+
+	
+      </footer>
+      
+    </article>
+    
+  </div>
+  <div class="col-lg-4">
+    
+    <aside class="sidebar">
+      
+      <section>
+  <h1>Posts Recentes</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/customizando-os-logs-do-rails-para-analise/">Customizando Os Logs Do Rails Para Análise</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/geral/livros-que-eu-ja-li">Livros Que Eu Já Li</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>Delicious</h1>
+  <div id="delicious"></div>
+  <script type="text/javascript" src="http://feeds.delicious.com/v2/json/fernandoalmeida?count=5&amp;sort=date&amp;callback=renderDeliciousLinks"></script>
+</section>
+
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'fernandoalmeida',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+      
+    </aside>
+    
+  </div>
+</div>
 
     </div>
   </div>
