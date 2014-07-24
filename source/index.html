@@ -1,0 +1,21 @@
+---
+layout: default
+sitemap:
+  priority: 0.5
+---
+
+<div class="container w">
+  <div class="row text-center">
+    <div class="col-lg-12">
+      <img src="/assets/img/aprender-praticar-compartilhar.png">
+      <h3>Recente no Blog</h3>
+      {% assign post = site.posts.first %}
+      {% capture content %}{{ post.content | split:"<!--more-->" | first }}{% endcapture %}
+      <h1 class="entry-title"><a href="{{ root_url }}{{ post.url }}">{% if site.titlecase %}{{ post.title | titlecase }}{% else %}{{ post.title }}{% endif %}</a></h1>
+      <div class="entry-content">{{ content }}</div>
+    </div><!-- col-lg-7 -->
+  </div><!-- row -->
+  <br>
+  <br>
+  <br>
+</div><!-- container -->

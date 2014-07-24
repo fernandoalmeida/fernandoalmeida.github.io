@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="geo.region" content="BR-BA" />
+  <meta name="geo.placename" content="Salvador, Bahia" />
+  <meta name="geo.position" content="-12.988500;-38.479000" />
+  <meta name="ICBM" content="-12.988500;-38.479000" />
+  <meta name="robots" content="index, follow" />
+  <meta name="revisit" content="7 Days" />
+  <meta name="language" content="pt" />
+  <meta name="author" content="{{ site.author }}">
+  {% capture title %}{% if page.meta_title %}{{ page.meta_title }}{% else %}{{ page.title }}{% endif %}{% endcapture %}
+  <title>{% if title %}{% if site.titlecase %}{{ title | titlecase }}{% else %}{{ title }}{% endif %} - {% endif %}{{ site.title }}</title>
+  {% capture description %}{% if page.description %}{{ page.description }}{% else %}{{ content | raw_content }}{% endif %}{% endcapture %}
+  <meta name="description" content="{{ description | strip_html | condense_spaces | truncate:150 }}">
+  {% if page.keywords %}<meta name="keywords" content="{{ page.keywords }}">{% endif %}
+  <link rel="shortcut icon" href="{{ root_url }}/assets/ico/favicon.png">
+  
+  <!-- Bootstrap core CSS -->
+  <link href="{{ root_url }}/assets/css/bootstrap.css" rel="stylesheet">
+  <link href="{{ root_url }}/assets/css/font-awesome.min.css" rel="stylesheet">
+  <link href="{{ root_url }}/assets/css/font-mfizz.css" rel="stylesheet">
+
+  <!-- Pygments styles for code blocks -->
+  <link href="{{ root_url }}/assets/css/pygments.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ root_url }}/assets/css/main.css" rel="stylesheet">
+
+  {% capture canonical %}{{ site.url }}{% if site.permalink contains '.html' %}{{ page.url }}{% else %}{{ page.url | remove:'index.html' | strip_slash }}{% endif %}{% endcapture %}
+  <link rel="canonical" href="{{ canonical }}">
+
+  <link href="{{ site.subscribe_rss }}" rel="alternate" title="{{site.title}}" type="application/atom+xml">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="{{ root_url }}/assets/js/html5shiv.js"></script>
+  <script src="{{ root_url }}/assets/js/respond.min.js"></script>
+  <![endif]-->
+
+  <script src="{{ root_url }}/javascripts/modernizr-2.0.js"></script>
+  <script src="{{ root_url }}/assets/js/jquery-1.10.2.min.js"></script>
+  <script src="{{ root_url }}/javascripts/delicious.js"></script>
+  <script src="{{ root_url }}/javascripts/github.js"></script>
+  <script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="{{ root_url }}/assets/js/bootstrap.min.js"></script>
+  {% include google_analytics.html %}
+</head>

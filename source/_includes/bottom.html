@@ -1,0 +1,14 @@
+<div class="container w">
+  <div class="row">
+    <br><br>
+    <div class="col-lg-8">
+      <h3>NO BLOG</h3>
+      {% for post in site.posts limit: 1 %}
+        <h4>{{ post.title }}</h4>
+	<p>{{ post.render().content.split('<!--more-->').head() }}</p>
+      {% endfor %}
+    </div><!-- col-lg-8 -->
+  </div><!-- row -->
+  <br>
+  <br>
+</div><!-- container -->
