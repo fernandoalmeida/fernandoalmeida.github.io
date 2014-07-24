@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://fernandoalmeida.github.io/sitemap.xml 
+Sitemap: http://www.fernandoalmeida.net/sitemap.xml 

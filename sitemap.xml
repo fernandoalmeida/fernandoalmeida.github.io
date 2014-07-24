@@ -3,7 +3,7 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/customizando-os-logs-do-rails-para-analise/</loc>
+      <loc>http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise/</loc>
       
         <lastmod>2014-06-22T02:04:51-03:00</lastmod>
       
@@ -18,7 +18,7 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/geral/livros-que-eu-ja-li</loc>
+      <loc>http://www.fernandoalmeida.net/blog/geral/livros-que-eu-ja-li</loc>
       
         <lastmod>2012-07-05T00:24:06-03:00</lastmod>
       
@@ -34,24 +34,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/atom.xml</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/php/institucional-lider-imoveis/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -64,9 +49,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-lider-imoveis/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -79,9 +64,24 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/</loc>
+      <loc>http://www.fernandoalmeida.net/blog/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -94,24 +94,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/archives/</loc>
+      <loc>http://www.fernandoalmeida.net/blog/archives/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/sobre-mim/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -124,24 +109,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/php/institucional-grupo-ballylog/</loc>
+      <loc>http://www.fernandoalmeida.net/sobre-mim/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/php/institucional-cuore-vita/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -154,24 +124,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/joomla/portal-instituto-federal-da-bahia-ifba/</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-grupo-ballylog/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/joomla/loja-virtual-poly-informatica/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -184,24 +139,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-cuore-vita/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/joomla/loja-virtual-ct-celulares/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -214,24 +154,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/joomla/portal-sete-lagoas/</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/portal-instituto-federal-da-bahia-ifba/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/ruby/admin-financeiro/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -244,41 +169,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/portfolio/ruby/ebookplus/</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/loja-virtual-poly-informatica/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/robots.txt</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/geral/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -291,24 +184,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/geral/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/livros/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -321,24 +199,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/livros/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/loja-virtual-ct-celulares/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/ruby/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -351,24 +214,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/ruby/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/portal-sete-lagoas/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/rails/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -381,24 +229,9 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/rails/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/ruby/admin-financeiro/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
-  
-    
-    <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/log/</loc>
-      
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -411,9 +244,176 @@
   
     
     <url>
-      <loc>http://fernandoalmeida.github.io/blog/categories/log/atom.xml</loc>
+      <loc>http://www.fernandoalmeida.net/portfolio/ruby/ebookplus/</loc>
       
-        <lastmod>2014-07-23T21:55:23-03:00</lastmod>
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/robots.txt</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/geral/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/geral/atom.xml</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/livros/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/livros/atom.xml</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/ruby/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/ruby/atom.xml</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/rails/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/rails/atom.xml</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/log/</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/log/atom.xml</loc>
+      
+        <lastmod>2014-07-23T21:59:04-03:00</lastmod>
       
       
         <changefreq>monthly</changefreq>

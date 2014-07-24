@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rails | Desenvolvimento de Software]]></title>
-  <link href="http://fernandoalmeida.github.io/blog/categories/rails/atom.xml" rel="self"/>
-  <link href="http://fernandoalmeida.github.io/"/>
-  <updated>2014-07-23T21:55:23-03:00</updated>
-  <id>http://fernandoalmeida.github.io/</id>
+  <link href="http://www.fernandoalmeida.net/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://www.fernandoalmeida.net/"/>
+  <updated>2014-07-23T21:59:04-03:00</updated>
+  <id>http://www.fernandoalmeida.net/</id>
   <author>
     <name><![CDATA[Fernando Almeida]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Customizando Os Logs Do Rails Para Análise]]></title>
-    <link href="http://fernandoalmeida.github.io/blog/customizando-os-logs-do-rails-para-analise/"/>
+    <link href="http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise/"/>
     <updated>2014-06-22T02:04:51-03:00</updated>
-    <id>http://fernandoalmeida.github.io/blog/customizando-os-logs-do-rails-para-analise</id>
+    <id>http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise</id>
     <content type="html"><![CDATA[<p>Formatar os logs da aplicação para simplificar o parsing será nosso principal objetivo nesse post, esta é a primeira etapa de um outro objetivo que é centralizar e analisar programaticamente esses logs para identificar eventos e aplicar ações como indexar, arquivar, notificar (por email/group chat) ou simplesmente delegar para outras ferramentas como bug tracker, dashboard de estatísticas (técnicas e/ou de negócio), etc.</p>
 
 <!--more-->
