@@ -4,7 +4,7 @@
   <title><![CDATA[Desenvolvimento de Software]]></title>
   <link href="http://www.fernandoalmeida.net/atom.xml" rel="self"/>
   <link href="http://www.fernandoalmeida.net/"/>
-  <updated>2014-07-26T03:11:39-03:00</updated>
+  <updated>2015-01-05T00:32:47-02:00</updated>
   <id>http://www.fernandoalmeida.net/</id>
   <author>
     <name><![CDATA[Fernando Almeida]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Como Usar Postgres Local Sem Senha]]></title>
+    <link href="http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/"/>
+    <updated>2015-01-04T23:14:05-02:00</updated>
+    <id>http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha</id>
+    <content type="html"><![CDATA[<p>Em ambiente de desenvolvimento podemos facilitar o uso do Postgres permitindo login sem senha.<br/>
+Mostrarei aqui como fazer isso de forma simples e rapida.</p>
+
+<!--more-->
+
+
+<p>Para isto basta substituir o conteúdo do arquivo <code>/etc/postgresql/POSTGRES_VERSION/main/pg_hba.conf</code> por</p>
+
+<pre><code>local  all  all                trust
+host   all  all  127.0.0.1/32  trust
+host   all  all  ::1/128       trust
+</code></pre>
+
+<p>Depois de reiniciar o serviço já será permitida conexão, tanto local quanto via rede/VM, com qualquer usuário (inclusive o <code>postgres</code>) sem senha.</p>
+
+<p>Para testar execute o comando <code>psql -U postgres</code>.</p>
+
+<h1>Referência:</h1>
+
+<p><a href="http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html">http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Customizando Os Logs Do Rails Para Análise]]></title>

@@ -14,10 +14,10 @@
   <meta name="language" content="pt" />
   <meta name="author" content="Fernando Almeida">
   
-  <title>Akatus Pagamentos Online - Desenvolvimento de Software</title>
+  <title>Como Usar Postgres Local Sem Senha - Desenvolvimento de Software</title>
   
-  <meta name="description" content="Akatus Pagamentos Online Sistema de pagamentos online via cartão de crédito, boleto e TEF,
-APIs de integração com aplicativo mobile (iOS e Android) &hellip;">
+  <meta name="description" content="Em ambiente de desenvolvimento podemos facilitar o uso do Postgres permitindo login sem senha.
+Mostrarei aqui como fazer isso de forma simples e &hellip;">
   
   <link rel="shortcut icon" href="/assets/ico/favicon.png">
   
@@ -33,7 +33,7 @@ APIs de integração com aplicativo mobile (iOS e Android) &hellip;">
   <link href="/assets/css/main.css" rel="stylesheet">
 
   
-  <link rel="canonical" href="http://www.fernandoalmeida.net/portfolio/ruby/akatus">
+  <link rel="canonical" href="http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha">
 
   <link href="/atom.xml" rel="alternate" title="Desenvolvimento de Software" type="application/atom+xml">
 
@@ -81,8 +81,8 @@ APIs de integração com aplicativo mobile (iOS e Android) &hellip;">
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li class=""><a href="/">INÍCIO</a></li>
-        <li class="active"><a href="/portfolio/">PORTFOLIO</a></li>
-        <li class=""><a href="/blog/">BLOG</a></li>
+        <li class=""><a href="/portfolio/">PORTFOLIO</a></li>
+        <li class="active"><a href="/blog/">BLOG</a></li>
         <li class=""><a href="/sobre-mim/">SOBRE MIM</a></li>
         <li class=""><a title="CONTATO" data-toggle="modal" data-target="#myModal" href="#myModal"><i class="fa fa-envelope-o"></i></a></li>
       </ul>
@@ -94,34 +94,88 @@ APIs de integração com aplicativo mobile (iOS e Android) &hellip;">
     <div id="content">
       <div class="row">
   <div class="col-lg-8">
-    <article role="article">
+    <article class="hentry" role="article">
       
-      <header>
-	<h1 class="entry-title">Akatus Pagamentos Online</h1>
+  <header>
+    
+      <h1 class="entry-title">Como Usar Postgres Local Sem Senha</h1>
+    
+    
+  </header>
+
+
+<div class="entry-content"><p>Em ambiente de desenvolvimento podemos facilitar o uso do Postgres permitindo login sem senha.<br/>
+Mostrarei aqui como fazer isso de forma simples e rapida.</p>
+
+<!--more-->
+
+
+<p>Para isto basta substituir o conteúdo do arquivo <code>/etc/postgresql/POSTGRES_VERSION/main/pg_hba.conf</code> por</p>
+
+<pre><code>local  all  all                trust
+host   all  all  127.0.0.1/32  trust
+host   all  all  ::1/128       trust
+</code></pre>
+
+<p>Depois de reiniciar o serviço já será permitida conexão, tanto local quanto via rede/VM, com qualquer usuário (inclusive o <code>postgres</code>) sem senha.</p>
+
+<p>Para testar execute o comando <code>psql -U postgres</code>.</p>
+
+<h1>Referência:</h1>
+
+<p><a href="http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html">http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html</a></p>
+</div>
+
+
+      <footer>
+	<p class="meta">
+	  
+  
+
+<span class="byline author vcard"><span class="glyphicon glyphicon-user"></span><span class="fn">Fernando Almeida</span></span>
+
+	  
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-04T23:14:05-02:00" pubdate data-updated="true"><span class="glyphicon glyphicon-calendar"></span>04/01/2015</time>
+	  
+
+<span class="categories">
+  <span class="glyphicon glyphicon-tags"></span>
+  
+    <a class='category' href='/blog/categories/dicas/'>dicas</a>, <a class='category' href='/blog/categories/postgres/'>postgres</a>
+  
+</span>
+
+
+	</p>
 	
-      </header>
-      
-      <p>Sistema de pagamentos online via cartão de crédito, boleto e TEF,
-APIs de integração com aplicativo mobile (iOS e Android) e sistemas de e-commerce (Magento, OpenCart, PrestaShop).</p>
+	<div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/" data-via="fernandoalmeida" data-counturl="http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/" >Tweet</a>
+  
+  
+  
+</div>
 
-<p>Desafios de alta disponibilidade, escalabilidade e segurança
-envolvendo processamento assíncrono, balanceamento de carga, integração com
-serviços externos e muitas tecnologias.</p>
-
-<p>Aplicação de metodologias como Scrum e XP com técnicas como TDD, pair programming, etc.</p>
-
-<p><a href="/assets/img/portfolio/akatus/akatus-home.png">
-  <img src="/assets/img/portfolio/akatus/akatus-home-mini.png" alt="Akatus Online" />
-</a>
-<a href="/assets/img/portfolio/akatus/akatus-dashboard.png">
-  <img src="/assets/img/portfolio/akatus/akatus-dashboard-mini.png" alt="Akatus Painel" />
-</a>
-<a href="/assets/img/portfolio/akatus/akatus-checkout.png">
-  <img src="/assets/img/portfolio/akatus/akatus-checkout-mini.png" alt="Akatus Checkout Web" />
-</a></p>
-
-      
+	
+      </footer>
     </article>
+    
+    <section>
+      <h1>Comentários</h1>
+      <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+    </section>
     
   </div>
   <div class="col-lg-4">
@@ -205,6 +259,22 @@ serviços externos e muitas tecnologias.</p>
 </div><!-- Footer -->
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'fernandoalmeidanet';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/';
+        var disqus_url = 'http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
