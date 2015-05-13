@@ -14,7 +14,7 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <li class="{% if page.url == '/index.html' %}{{ 'active' }}{% endif %}"><a href="{{ root_url }}/">INÍCIO</a></li>
-        <li class="{% if page.url contains '/portfolio' %}{{ 'active' }}{% endif %}"><a href="{{ root_url }}/portfolio/">PORTFOLIO</a></li>
+        <!-- <li class="{% if page.url contains '/portfolio' %}{{ 'active' }}{% endif %}"><a href="{{ root_url }}/portfolio/">PORTFOLIO</a></li> -->
         <li class="{% if page.url contains '/blog' %}{{ 'active' }}{% endif %}"><a href="{{ root_url }}/blog/">BLOG</a></li>
         <li class="{% if page.url contains '/sobre-mim' %}{{ 'active' }}{% endif %}"><a href="{{ root_url }}/sobre-mim/">SOBRE MIM</a></li>
         <li class="{% if page.url == '/contato.html' %}{{ 'active' }}{% endif %}"><a title="CONTATO" data-toggle="modal" data-target="#myModal" href="#myModal"><i class="fa fa-envelope-o"></i></a></li>
