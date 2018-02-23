@@ -439,7 +439,7 @@ aside ul {
 
 aside li {
     list-style: none;
-    padding: 5px 0;
+    padding: 20px 0;
     border-bottom: 1px dotted #ccc;
 }
 
@@ -447,3 +447,6 @@ aside #gh_repos li p {
     margin-bottom: 0;
 }
 
+.sobre-mim strong {
+    font-weight: normal
+}
