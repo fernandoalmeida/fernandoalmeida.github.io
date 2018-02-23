@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Log | Desenvolvimento de Software]]></title>
+  <link href="http://www.fernandoalmeida.net/blog/categories/log/atom.xml" rel="self"/>
+  <link href="http://www.fernandoalmeida.net/"/>
+  <updated>2018-02-23T05:24:31-03:00</updated>
+  <id>http://www.fernandoalmeida.net/</id>
+  <author>
+    <name><![CDATA[Fernando Almeida]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Customizando Os Logs Do Rails Para Análise]]></title>
+    <link href="http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise/"/>
+    <updated>2014-06-22T02:04:51-03:00</updated>
+    <id>http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise</id>
+    <content type="html"><![CDATA[<p>Formatar os logs da aplicação para simplificar o parsing será nosso principal objetivo nesse post, esta é a primeira etapa de um outro objetivo que é centralizar e analisar programaticamente esses logs para identificar eventos e aplicar ações como indexar, arquivar, notificar (por email/group chat) ou simplesmente delegar para outras ferramentas como bug tracker, dashboard de estatísticas (técnicas e/ou de negócio), etc.</p>
+
+<!--more-->
+
+
+<p>O log padrão do Rails é feito em múltiplas linhas, o que facilita a leitura direta durante o desenvolvimento mas dificulta o parsing.</p>
+
+<p>A <a href="http://docs.fluentd.org/articles/in_tail">documentação do Fluentd</a> exemplifica o parsing multiline de um GET padrão do Rails mas basta acontecer qualquer coisa diferente do “normal” (como um warning ou exception com backtrace) que a regex é rapidamente invalidada.
+Para superar essa dificuldade vamos logar cada request em uma única linha e além disso adicionar informações para contextualizar o conteúdo de acordo com a nossa necessidade.</p>
+
+<p>Existem diversas <a href="https://www.ruby-toolbox.com/categories/Logging">ferramentas para customizar os logs do Rails</a>, depois de testar algumas escolhi a gem <a href="https://github.com/roidrage/lograge">Lograge</a> para nos ajudar neste ponto.</p>
+
+<p>A primeira coisa a fazer é instalar e configurar a gem:</p>
+
+<pre><code class="ruby Gemfile">gem “lograge”
+</code></pre>
+
+<pre><code class="ruby config/application.rb">config.log_level :info
+config.lograge.enabled = true
+</code></pre>
+
+<p>Com isso já temos um log bem mais fácil de parsear:</p>
+
+<pre><code>method=GET path=/ format=html controller=site action=index status=200 duration=262.28 view=108.93 db=3.84
+</code></pre>
+
+<p>Vamos ainda extrair mais algumas informações dos nossos objetos “request“ e “session” criando o módulo CustomLog::ControllerHelper:</p>
+
+<pre><code class="ruby lib/custom_log/controller_helper.rb">module CustomLog
+  module ControllerHelper
+    extend ActiveSupport::Concern
+    included do
+      def append_info_to_payload(payload)
+        super
+        payload[:request] = request
+        payload[:session] = session
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>Incluiremos esse módulo em nosso ApplicationController:</p>
+
+<pre><code class="ruby app/controllers/application_controller.rb">class ApplicationController &lt; ActionController::Base
+  include CustomLog::ControllerHelper
+end
+</code></pre>
+
+<p>Agora temos a possibilidade de extrair as informações que desejamos, faremos isso criando a classe CustomLog::Subscriber:</p>
+
+<pre><code class="ruby lib/custom_log/subscriber.rb">module CustomLog
+  class Subscriber
+    attr_reader :event, :payload
+    attr_accessor :data
+
+    def initialize(event)
+      @event = event
+      @payload = event.payload
+      @data = { :time =&gt; %Q(‘#{event.time}’) }
+    end
+
+    def extract_data
+      session_data
+      request_data
+      params_data
+
+      return data
+    end
+
+    private
+
+    def session_data
+      session = payload[:session]
+      if session
+        data.merge!({ :session_id =&gt; session[:session_id] })
+      end
+    end
+
+    def request_data
+      request = payload[:request]
+      if request
+        data.merge!({
+          :host =&gt; request.host,
+          :request_id =&gt; request.uuid,
+          :remote_ip =&gt; request.remote_ip,
+          :user_agent =&gt; %Q(‘#{request.user_agent}’),
+          :referer =&gt; request.referer,
+          :flash =&gt; request.flash.instance_variable_get(‘@flashes’)
+        })
+      end
+    end
+
+    def params_data
+      internal_params = %w(controller action format
+                           utf8 authenticity_token commit)
+      params = payload[:params]
+      if params
+        data.merge!({ :params =&gt; params.except(*internal_params) })
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>Configuramos também a gem “lograge” para usar nossa classe:</p>
+
+<pre><code class="ruby config/environments/development.rb">config.lograge.custom_options = lambda { |event| 
+  CustomLog::Subscriber.new(event).extract_data 
+}
+</code></pre>
+
+<p>Agora complementamos nosso log com:</p>
+
+<pre><code>time=’2014-06-15 13:13:47 -0300' session_id=abcde12345 host=app01 request_id=a1b2c3d4e5 remote_ip=179.209.205.143 user_agent=’Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:26.0) Gecko/20100101 Firefox/26.0' referer=/things/new flash={:notice=&gt;”Dados gravados com sucesso”} params={“thing”=&gt;{“name”=&gt;”Teste”}
+</code></pre>
+
+<p>Além disso vamos incluir também as mensagens de validação do objeto que estamos manipulando, para isso vamos alterar o helper e o subscriber:</p>
+
+<pre><code class="ruby lib/custom_log/controller_helper.rb">module CustomLog
+  module ControllerHelper
+    ...
+    def validation_messages
+      saved_object.errors.to_json unless saved_object.errors.blank?
+    rescue
+      nil
+    end
+    def saved_object
+      instance_variable_get("@#{controller_name.singularize}")
+    end
+    ...
+    def append_info_to_payload(payload)
+      ...
+      payload[:validations] = validation_messages
+    end
+  end
+end
+</code></pre>
+
+<pre><code class="ruby lib/custom_log/subscriber.rb">module CustomLog
+  class Subscriber
+    def extract_data
+      ...
+      validations_data
+      ...
+    end
+    ...
+    def validations_data
+      validations = payload[:validations]
+      if validations
+        data.merge!({ :validations =&gt; validations })
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>complementando o log com coisas do tipo:</p>
+
+<pre><code>flash={:error=&gt;”Não foi possível gravar os dados”} validations={"name":["já está em uso"]}
+</code></pre>
+
+<p>Em uma aplicação multitenant também é importante ter informações sobre o usuário e o tenant (empresa, conta, etc) com que os requests estão interagindo, para isso alteramos mais uma vez o helper e o subscriber:</p>
+
+<pre><code class="ruby lib/custom_log/controller_helper.rb">module CustomLog
+  module ControllerHelper
+    ...
+    def custom_log_data(payload)
+      payload[:custom_log_data] = {}
+    end
+    ...
+    def append_info_to_payload(payload)
+      ...
+      custom_log_data(payload)
+    end
+  end
+end
+</code></pre>
+
+<pre><code class="ruby lib/custom_log/subscriber.rb">module CustomLog
+  class Subscriber
+    def extract_data
+      ...
+      custom_data
+      ...
+    end
+    ...
+    def custom_data
+      custom = payload[:custom_log_data]
+      if custom.is_a?(Hash)
+        custom.each_pair { |key, value| data[key] = value }
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>Como essas informações são específicas de cada aplicação precisamos customizar o método em nosso controller:</p>
+
+<pre><code class="ruby app/controllers/application_controller.rb">def custom_log_data(payload)
+  payload[:custom_log_data] = {
+    user_id: current_user.try(:id),
+    account_id: current_account.try(:id)
+  }
+end
+</code></pre>
+
+<p>Dessa forma complementamos nosso log com:</p>
+
+<pre><code>user_id=987 account_id=123
+</code></pre>
+
+<p>E para finalizar vamos logar o backtrace completo em caso de exceptions, para isso vamos complementar o <a href="https://github.com/rails/rails/blob/3-2-stable/activesupport/lib/active_support/notifications/instrumenter.rb">Instrumenter do ActiveSupport</a>:</p>
+
+<pre><code class="ruby config/initializers/log_backtrace.rb">module ActiveSupport
+  module Notifications
+    class Instrumenter
+      attr_reader :id
+
+      def initialize(notifier)
+        @id = unique_id
+        @notifier = notifier
+      end
+
+      def instrument(name, payload={})
+        started = Time.now
+        begin
+          yield
+        rescue Exception =&gt; e
+          payload[:exception] = [e.class.name, e.message]
+          payload[:backtrace] = e.backtrace
+          raise e
+        ensure
+          @notifier.publish(name, started, Time.now, @id, payload)
+        end
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>e alterar novamente nosso subscriber:</p>
+
+<pre><code class="ruby lib/custom_log/subscriber.rb">module CustomLog
+  class Subscriber
+    def extract_data
+      ...
+      exception_data
+      ...
+    end
+    ...
+    def exception_data
+      exception = payload[:exception]
+      backtrace = payload[:backtrace]
+      if exception
+        data.merge!({
+          :exception_class =&gt; exception.first,
+          :exception_message =&gt; exception.last,
+          :backtrace =&gt; %Q(‘#{Array(backtrace).to_json}’)
+        })
+      end
+    end
+  end
+end
+</code></pre>
+
+<p>Isso adiciona ao  nosso log informações como:</p>
+
+<pre><code>exception_class=RuntimeError exception_message=Test backtrace=’[“complete", "backtrace", "array"]'
+</code></pre>
+
+<p>Com isso atingimos nosso objetivo que é ter o log em uma única linha contextualizado com todas as informações que nos interessam para fazer análise de forma automatizada.</p>
+
+<p>Por precaução fiz um benchmark bem  simples com o antes/depois de nossas customizações e a diferença foi de 0.01 segundo simulando 1000 requests com concorrência de 30, o que acredito ser aceitável para a maioria dos casos.</p>
+
+<p>Veja um <a href="https://gist.github.com/fernandoalmeida/ef03643fd8d924cc034a">Gist com o conteúdo completo</a> de cada arquivo que criamos aqui.</p>
+
+<p>Na próxima etapa vamos usar um agregador para receber esses logs customizados, parsear  e tomar decisões sobre onde persistir, arquivar, indexar, notificar, disponibilizar para outros serviços (via <a href="http://en.wikipedia.org/wiki/Publish%E2%80%93subscribe_pattern">PubSub</a>, webhook, etc) totalmente independente/desacoplado da aplicação e tolerante a falhas.</p>
+
+<p><strong>Referências e links relacionados:</strong></p>
+
+<ul>
+<li><a href="http://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying">http://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying</a></li>
+<li><a href="http://gojko.net/2006/12/09/logging-anti-patterns/">http://gojko.net/2006/12/09/logging-anti-patterns/</a></li>
+<li><a href="http://blog.mmlac.com/log4r-for-rails/">http://blog.mmlac.com/log4r-for-rails/</a></li>
+<li><a href="http://rubyjunky.com/cleaning-up-rails-4-production-logging.html">http://rubyjunky.com/cleaning-up-rails-4-production-logging.html</a></li>
+<li><a href="http://www.paperplanes.de/2012/3/14/on-notifications-logsubscribers-and-bringing-sanity-to-rails-logging.html">http://www.paperplanes.de/2012/3/14/on-notifications-logsubscribers-and-bringing-sanity-to-rails-logging.html</a></li>
+<li><a href="http://www.railsonmaui.com//blog/2013/05/08/strategies-for-rails-logging-and-error-handling/">http://www.railsonmaui.com//blog/2013/05/08/strategies-for-rails-logging-and-error-handling/</a></li>
+<li><a href="http://edgeguides.rubyonrails.org/active_support_instrumentation.html">http://edgeguides.rubyonrails.org/active_support_instrumentation.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

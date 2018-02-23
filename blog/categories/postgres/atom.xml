@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Postgres | Desenvolvimento de Software]]></title>
+  <link href="http://www.fernandoalmeida.net/blog/categories/postgres/atom.xml" rel="self"/>
+  <link href="http://www.fernandoalmeida.net/"/>
+  <updated>2018-02-23T05:24:31-03:00</updated>
+  <id>http://www.fernandoalmeida.net/</id>
+  <author>
+    <name><![CDATA[Fernando Almeida]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Como Usar Postgres Local Sem Senha]]></title>
+    <link href="http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/"/>
+    <updated>2015-01-04T22:14:05-03:00</updated>
+    <id>http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha</id>
+    <content type="html"><![CDATA[<p>Em ambiente de desenvolvimento podemos facilitar o uso do Postgres permitindo login sem senha.<br/>
+Mostrarei aqui como fazer isso de forma simples e rapida.</p>
+
+<!--more-->
+
+
+<p>Para isto basta substituir o conteúdo do arquivo <code>/etc/postgresql/POSTGRES_VERSION/main/pg_hba.conf</code> por</p>
+
+<pre><code>local  all  all                trust
+host   all  all  127.0.0.1/32  trust
+host   all  all  ::1/128       trust
+</code></pre>
+
+<p>Depois de reiniciar o serviço já será permitida conexão, tanto local quanto via rede/VM, com qualquer usuário (inclusive o <code>postgres</code>) sem senha.</p>
+
+<p>Para testar execute o comando <code>psql -U postgres</code>.</p>
+
+<h1>Referência:</h1>
+
+<p><a href="http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html">http://www.postgresql.org/docs/9.4/static/auth-pg-hba-conf.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

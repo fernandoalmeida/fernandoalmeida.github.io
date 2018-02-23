@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/how-to-limit-cpu-and-memory-usage-with-cgroups-on-debian-ubuntu/</loc>
+      
+        <lastmod>2016-11-03T03:34:30-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/como-usar-postgres-local-sem-senha/</loc>
+      
+        <lastmod>2015-01-04T22:14:05-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/customizando-os-logs-do-rails-para-analise/</loc>
+      
+        <lastmod>2014-06-22T02:04:51-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/archives/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/sobre-mim/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-lider-imoveis/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-cuore-vita/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/php/institucional-grupo-ballylog/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/loja-virtual-ct-celulares/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/portal-sete-lagoas/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/portal-instituto-federal-da-bahia-ifba/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/joomla/loja-virtual-poly-informatica/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/ruby/admin-financeiro/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/ruby/ebookplus/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/portfolio/ruby/akatus/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/robots.txt</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/ruby/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/ruby/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/rails/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/rails/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/log/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/log/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/dicas/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/dicas/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/postgres/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/postgres/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/cgroups/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/cgroups/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/linux/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/linux/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/debian/</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>http://www.fernandoalmeida.net/blog/categories/debian/atom.xml</loc>
+      
+        <lastmod>2018-02-23T05:24:31-03:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.3</priority>
+      
+    </url>
+    
+  
+</urlset>

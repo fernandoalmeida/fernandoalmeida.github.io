@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Linux | Desenvolvimento de Software]]></title>
+  <link href="http://www.fernandoalmeida.net/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://www.fernandoalmeida.net/"/>
+  <updated>2018-02-23T05:24:31-03:00</updated>
+  <id>http://www.fernandoalmeida.net/</id>
+  <author>
+    <name><![CDATA[Fernando Almeida]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[How to Limit CPU and Memory Usage With Cgroups on Debian/Ubuntu]]></title>
+    <link href="http://www.fernandoalmeida.net/blog/how-to-limit-cpu-and-memory-usage-with-cgroups-on-debian-ubuntu/"/>
+    <updated>2016-11-03T03:34:30-03:00</updated>
+    <id>http://www.fernandoalmeida.net/blog/how-to-limit-cpu-and-memory-usage-with-cgroups-on-debian-ubuntu</id>
+    <content type="html"><![CDATA[<p>Cgroups is a flexible Linux kernel feature to <em>limit</em>, <em>police</em> and <em>account</em>
+resources usage. A <em>cgroup</em> is a set of <em>tasks</em> for a <em>subsystems</em>, that is
+typically a <em>resource controller</em>.</p>
+
+<!--more-->
+
+
+<p>A file system of type <em>cgroup</em> is mounted and all operations are run over it.</p>
+
+<h2>Installation</h2>
+
+<p>The installation can be done using any of <em>libcgroup</em>, <em>cgmanager</em> or <em>systemd</em>.</p>
+
+<h2>Usage</h2>
+
+<p>They can be used in multiple ways</p>
+
+<ul>
+<li>By accessing the cgroup <em>filesystem</em> directly.</li>
+<li>Using the <em>cgm</em> client (part of the <em>cgmanager</em>).</li>
+<li>Via <em>cgcreate</em>, <em>cgexec</em> and <em>cgclassify</em> (part of <em>cgroup-tools</em>).</li>
+<li>Via <em>cgconfig.conf</em> and <em>cgrules.conf</em> (also part of <em>cgroup-tools</em>).</li>
+</ul>
+
+
+<p>We will use this last option, so install <em>cgroup-tools</em> with</p>
+
+<pre><code class="bash">sudo apt-get install cgroup-tools
+</code></pre>
+
+<p>Debian, by default, disables the memory controller, we can enable it adding the
+following in <code>/etc/default/grub</code></p>
+
+<pre><code class="bash">GRUB_CMDLINE_LINUX_DEFAULT="quiet cgroup_enable=memory swapaccount=1"
+</code></pre>
+
+<p>So, update Grub</p>
+
+<pre><code class="bash">sudo update-grub
+</code></pre>
+
+<p>Now the environment and tools are ready, we will define some &ldquo;roles&rdquo; in
+<code>/etc/cgconfig.conf</code></p>
+
+<pre><code>group app/editor {
+  cpu {
+    cpu.shares = 500;
+  }
+  memory {
+    memory.limit_in_bytes = 1000000000;
+  }
+}
+
+group app/browser {
+  cpu {
+    cpu.shares = 300;
+  }
+  memory {
+    memory.limit_in_bytes = 1000000000;
+  }
+}
+
+group app/util {
+  cpu {
+    cpu.shares = 300;
+  }
+  memory {
+    memory.limit_in_bytes = 500000000;
+  }
+}
+</code></pre>
+
+<p>The maximum value for <code>cpu.shares</code> is 1000, so 300 is setting as 30% the usage
+limit for an application with this &ldquo;role&rdquo;. <code>memory.limit_in_bytes</code> is self
+descriptive.</p>
+
+<p>We will associate these &ldquo;roles&rdquo; and the applications in <code>/etc/cgrules.conf</code></p>
+
+<pre><code>*:emacs         cpu,memory      app/editor/
+*:conkeror      cpu,memory      app/browser/
+*:firefox       cpu,memory      app/browser/
+*:slack         cpu,memory      app/util/
+*:dropbox       cpu,memory      app/util/
+</code></pre>
+
+<p>Now we need apply the rules with the commands</p>
+
+<pre><code class="bash">cgconfigparser -l /etc/cgconfig.conf
+cgrulesengd
+</code></pre>
+
+<p>Add them in <code>/etc/rc.local</code> for applying on reboot.</p>
+
+<p>That&rsquo;s it!</p>
+
+<p>We can check if our new rules were applied using</p>
+
+<pre><code class="bash">cat /proc/`pidof dropbox`/cgroup | grep app
+
+# 5:memory:/app/util
+# 2:cpu,cpuacct:/app/util
+</code></pre>
+
+<p>And we can check the memory usage of a process with</p>
+
+<pre><code class="bash">smem -P dropbox
+
+# PID User     Command                         Swap      USS      PSS      RSS
+# 1955 fernando /home/fernando/.dropbox-dis        0   191800   192388   201124
+</code></pre>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt">https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt</a></li>
+<li><a href="https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt">https://www.kernel.org/doc/Documentation/cgroup-v1/memory.txt</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/cgroups">https://wiki.archlinux.org/index.php/cgroups</a></li>
+<li><a href="https://github.com/docker/docker/issues/396#issuecomment-179470044">https://github.com/docker/docker/issues/396#issuecomment-179470044</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
